@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: header">
+</head>
+<body >
+<style type="text/css">
+#htd { font-size: 12px;width:100px }
+#tdv { font-size: 12px;width:100% }
+#tdhpx { font-size: 12px;width:80px }
+#tdh { font-size: 12px;width:200px }
+#tabsize { border:1px solid DarkGray;width:99%;height:100%;cellspacing:1px }
+th {
+     font-size: 12px;
+}
+body {
+	margin-left: 10px;
+}
+</style>
+<script th:inline="javascript" type="text/javascript">
+//<![CDATA[
+	$(function(){
+		$('#ff').form({
+			success:function(data){
+				$.messager.alert('Server', data);
+			}
+		});
+		
+	});
+//]]>
+</script>
+<table border=0 >
+	<tr>
+		<td colspan="2">
+			<table border=0 cellspacing="0" >
+		    	<tr>
+		    		<td><b><font color="blue"><label>Path：</label></font></b></td>
+		    		<td id="tdv"><b><font color="red" th:text="${zkpath}">zkpath</font></b></td>
+		    	</tr>
+		    </table>
+		</td>
+	</tr>
+	<tr>
+		<td align="left" valign="top"  >
+		    <table border=0 cellspacing="0" width=300>
+		    	<tr><td id="htd" colspan="2"><b><font color="blue"><label>Node ACLs</label></font></b></td></tr>
+		    		<!-- <c:forEach items="${acls}" var="acl"> -->
+						<!--/*/ <th:block th:each="acl : ${acls}"> /*/-->
+						<tr>
+							<td id="htd"><label >Scheme：</label></td>
+							<td id="tdhpx" th:text="${acl.scheme}">acl.scheme</td>
+						</tr>
+						<tr>
+							<td id="htd"><label >Id：</label></td>
+							<td id="tdhpx" th:text="${acl.id}">acl.id</td>
+						</tr>
+						<tr>
+							<td id="htd" valign="top"><label >Permissions：</label></td>
+							<td id="tdhpx" th:text="${acl.perms}">acl.perms</td>
+						</tr>
+						<!--/*/ </th:block> /*/--> 
+					<!-- </c:forEach> -->
+			</table>
+			</td>
+			<td align="left" valign="top" rowspan="2">
+				<form id="ff" action="zk/saveData" method="post">
+			    <input type="hidden" value="${cacheId}" name="cacheId" />
+			    <input type="hidden" value="${path}" name="path" />
+				<table border=0 cellspacing="0">
+			    	<tr>
+			    	<td><b><font color="blue"><label>Node Data</label></font></b></td>
+			    	<td align="right"><a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="javascript:$('#ff').submit();"><span data-locale-html="save">保存</span></a></td>
+			    	</tr>
+			    	<tr>
+						<td align="left" valign="top" colspan="2">
+						<textarea rows="20" name="data" cols="70" style="border:1px solid CornflowerBlue ;width:98%;margin: 3px;" th:text="${data}">data</textarea>
+						</td>
+					</tr>
+			    </table>
+				</form>
+			</td>
+		</tr>
+		<tr>
+			<td align="left" valign="top"  >
+			<table border=0 cellspacing="0"  width=300>
+		    	<tr><td colspan="2"><b><font color="blue"><label>Node Metadata</label></font></b></td></tr>
+		    		<tr><td id="htd"><label >Data Length：</label></td><td id="tdh" th:text="${dataLength}">dataLength</td></tr>
+					<tr><td id="htd"><label >Creation Time：</label></td><td id="tdh" th:text="${ctime}">ctime</td></tr>
+					<tr><td id="htd"><label >Last Modified Time：</label></td><td id="tdh" th:text="${mtime}">mtime</td></tr>
+					<tr><td id="htd"><label >Data Version：</label></td><td id="tdh" th:text="${version}">version</td></tr>
+					<tr><td id="htd"><label >Children Version：</label></td><td id="tdh" th:text="${cversion}">cversion</td></tr>
+					<tr><td id="htd"><label >ACL Version：</label></td><td id="tdh" th:text="${aversion}">aversion</td></tr>
+					<tr><td id="htd"><label >Ephemeral Owner：</label></td><td id="tdh" th:text="${ephemeralOwner}">ephemeralOwner</td></tr>
+					<tr><td id="htd"><label >Number Of Children：</label></td><td id="tdh" th:text="${numChildren}">numChildren</td></tr>
+					<tr><td id="htd"><label >Node Zxid：</label></td><td id="tdh" th:text="${pzxid}"></td></tr>
+					<tr><td id="htd"><label >Creation Zxid：</label></td><td id="tdh" th:text="${czxid}">czxid</td></tr>
+					<tr><td id="htd"><label >Modified Zxid：</label></td><td id="tdh" th:text="${mzxid}">mzxid</td></tr>
+					
+			</table>
+		</td>
+		
+	</tr>
+</table>
+
+</body>
+</html>
