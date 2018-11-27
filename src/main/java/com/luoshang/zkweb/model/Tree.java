@@ -1,4 +1,4 @@
-package com.yasenagat.zkweb.model;
+package com.luoshang.zkweb.model;
 
 import java.util.List;
 import java.util.Map;

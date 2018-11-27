@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration scan="true" debug="false">
+	<property resource= "application.properties" />
+	
+	<springProperty scope="context" name="logdir" source="logback.logdir" defaultValue="logs" />
+	<property name="LOGDIR" value="${logdir}"></property>
+
+	<springProperty scope="context" name="debugName" source="logback.debug.name" defaultValue="app" />
+	<property name="DEBUGNAME" value="${debugName}"></property>
+	
+	<springProperty scope="context" name="errorName" source="logback.error.name" defaultValue="app" />
+	<property name="ERRORNAME" value="${errorName}"></property>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- 对日志进行格式化 -->
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] [%p][%c][%M][%L]->%m%n</pattern>
+		</layout>
+	</appender>
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<file>${LOGDIR}/${DEBUGNAME}.log</file>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>DENY</onMatch>
+			<onMismatch>ACCEPT</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOGDIR}/${DEBUGNAME}.%d{yyyy-MM-dd}.log
+				<maxHistory>7</maxHistory>
+			</FileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] [%p][%c][%M][%L]->%m%n</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<file>${LOGDIR}/${ERRORNAME}.log</file>
+		<!-- 只打印 error log -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOGDIR}/${ERRORNAME}.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>50MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] [%p][%c][%M][%L]->%m%n</Pattern>
+		</encoder>
+	</appender>
+
+	<!-- 测试环境+开发环境. 多个使用逗号隔开. -->
+    <springProfile name="test,dev">
+        <logger name="com.luoshang.zkweb" level="DEBUG" additivity="false">
+        	<appender-ref ref="STDOUT" />
+			<appender-ref ref="FILE" />
+			<appender-ref ref="FILE_ERROR" />
+        </logger>
+    </springProfile>
+    <!-- 生产环境 -->
+    <springProfile name="prod">
+        <logger name="com.luoshang.zkweb" level="INFO" additivity="false">
+            <appender-ref ref="STDOUT" />
+			<appender-ref ref="FILE" />
+			<appender-ref ref="FILE_ERROR" />
+        </logger>
+    </springProfile>
+    
+    <root level="ERROR">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+		<appender-ref ref="FILE_ERROR" />
+	</root>
+	
+</configuration>

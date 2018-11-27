@@ -1,0 +1,8 @@
+2018-11-27 18:56:25 [restartedMain] [INFO][com.luoshang.zkweb.Application][logStarting][50]->Starting Application on PC150188 with PID 8496 (E:\github\zkWeb-v1\target\classes started by wang_weicheng in E:\github\zkWeb-v1)
+2018-11-27 18:56:25 [restartedMain] [DEBUG][com.luoshang.zkweb.Application][logStarting][53]->Running with Spring Boot v2.0.1.RELEASE, Spring v5.0.5.RELEASE
+2018-11-27 18:56:25 [restartedMain] [INFO][com.luoshang.zkweb.Application][logStartupProfileInfo][663]->The following profiles are active: dev
+2018-11-27 18:59:29 [restartedMain] [INFO][com.luoshang.zkweb.util.ZkCfgManagerImpl][init][98]->init zkCfg error : Connections could not be acquired from the underlying database!
+2018-11-27 19:09:56 [restartedMain] [INFO][com.luoshang.zkweb.Application][logStarting][50]->Starting Application on PC150188 with PID 9088 (E:\github\zkWeb-v1\target\classes started by wang_weicheng in E:\github\zkWeb-v1)
+2018-11-27 19:09:56 [restartedMain] [DEBUG][com.luoshang.zkweb.Application][logStarting][53]->Running with Spring Boot v2.0.1.RELEASE, Spring v5.0.5.RELEASE
+2018-11-27 19:09:56 [restartedMain] [INFO][com.luoshang.zkweb.Application][logStartupProfileInfo][663]->The following profiles are active: dev
+2018-11-27 19:13:01 [restartedMain] [INFO][com.luoshang.zkweb.util.ZkCfgManagerImpl][init][98]->init zkCfg error : Connections could not be acquired from the underlying database!

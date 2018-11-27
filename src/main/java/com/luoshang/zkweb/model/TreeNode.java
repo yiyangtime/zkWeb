@@ -1,4 +1,4 @@
-package com.yasenagat.zkweb.model;
+package com.luoshang.zkweb.model;
 
 public class TreeNode {
 

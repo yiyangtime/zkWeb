@@ -1,4 +1,4 @@
-package com.yasenagat.zkweb.web;
+package com.luoshang.zkweb.web;
 
 import java.net.URLDecoder;
 import java.util.Date;
@@ -10,10 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.yasenagat.zkweb.util.ZkCache;
-import com.yasenagat.zkweb.util.ZkCfgFactory;
-import com.yasenagat.zkweb.util.ZkCfgManager;
-import com.yasenagat.zkweb.util.ZkManagerImpl;
+
+import com.luoshang.zkweb.util.ZkCache;
+import com.luoshang.zkweb.util.ZkCfgFactory;
+import com.luoshang.zkweb.util.ZkCfgManager;
+import com.luoshang.zkweb.util.ZkManagerImpl;
 
 /**
  * zookeeper配置管理controller
@@ -40,13 +41,12 @@ public class ZkCfgController {
 			@RequestParam(required = false) int rows, @RequestParam(required = false) String whereSql) {
 		Map<String, Object> map = null;
 		try {
-			Logger.info(new Date() + "");
+			Logger.debug(new Date() + "");
 			map = new HashMap<String, Object>();
 			map.put("rows", zkCfgManager.query(page, rows, URLDecoder.decode(whereSql, "utf-8")));
 			map.put("total", zkCfgManager.count());
 			return map;
 		} catch (Exception e) {
-			e.printStackTrace();
 			Logger.error(e.getMessage(), e);
 		}
 		return map;

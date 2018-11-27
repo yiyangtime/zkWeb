@@ -1,4 +1,4 @@
-package com.yasenagat.zkweb.util;
+package com.luoshang.zkweb.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.yasenagat.zkweb.util.ZkManagerImpl.ZkConnectInfo.ZkHostPort;
+import com.luoshang.zkweb.util.ZkManagerImpl.ZkConnectInfo.ZkHostPort;
 
 public class ZkManagerImpl implements Watcher, ZkManager {
 

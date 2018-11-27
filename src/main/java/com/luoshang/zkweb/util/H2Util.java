@@ -1,4 +1,4 @@
-package com.yasenagat.zkweb.util;
+package com.luoshang.zkweb.util;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;

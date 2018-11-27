@@ -1,4 +1,4 @@
-package com.yasenagat.zkweb.util;
+package com.luoshang.zkweb.util;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,9 +8,7 @@ import java.util.Properties;
 public class ConfigUtil {
 
 	private static Properties p = new Properties();
-
 	static {
-
 		try {
 			p.load(findOtherPathInputStream("zk.properties"));
 		} catch (IOException e) {

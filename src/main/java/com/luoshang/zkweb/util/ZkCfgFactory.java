@@ -1,4 +1,4 @@
-package com.yasenagat.zkweb.util;
+package com.luoshang.zkweb.util;
 
 public class ZkCfgFactory {
 	private static ZkCfgManager _instance = new ZkCfgManagerImpl();

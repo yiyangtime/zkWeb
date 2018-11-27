@@ -1,4 +1,4 @@
-package com.yasenagat.zkweb;
+package com.luoshang.zkweb;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
