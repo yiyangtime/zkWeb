@@ -7,8 +7,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.luoshang.zkweb.facade.ZkCfgManager;
+import com.luoshang.zkweb.facade.ZkManager;
+import com.luoshang.zkweb.service.ZkManagerImpl;
+
+/**
+ * zookeeper缓存
+ * 
+ * @author LS
+ * @date 2018年11月28日上午11:30:40
+ */
 public class ZkCache {
-	private static final Logger log = LoggerFactory.getLogger(ZkCache.class);
+	private static final Logger Logger = LoggerFactory.getLogger(ZkCache.class);
 	private static Map<String, ZkManager> _cache = new ConcurrentHashMap<String, ZkManager>();
 
 	public static ZkManager put(String key, ZkManager zk) {
@@ -35,12 +45,16 @@ public class ZkCache {
 		ZkCache._cache = _cache;
 	}
 
+	/**
+	 * 初始化zookeeper配置管理
+	 * 
+	 * @param cfgManager
+	 */
 	public static void init(ZkCfgManager cfgManager) {
-
 		List<Map<String, Object>> list = cfgManager.query();
-		log.info("zk info size={}", list.size());
+		Logger.debug("zk info size={}", list.size());
 		for (Map<String, Object> m : list) {
-			log.info("zk info: id={},connectstr={},timeout={}", m.get("ID"), m.get("CONNECTSTR"),
+			Logger.debug("zk info: id={},connectstr={},timeout={}", m.get("ID"), m.get("CONNECTSTR"),
 					m.get("SESSIONTIMEOUT"));
 			ZkCache.put(m.get("ID").toString(), ZkManagerImpl.createZk().connect(m.get("CONNECTSTR").toString(),
 					Integer.parseInt(m.get("SESSIONTIMEOUT").toString())));

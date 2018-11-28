@@ -19,17 +19,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.jr.ob.JSON;
+import com.luoshang.zkweb.facade.ZkManager.PropertyPanel;
 import com.luoshang.zkweb.model.Tree;
 import com.luoshang.zkweb.model.TreeRoot;
 import com.luoshang.zkweb.util.ZkCache;
 import com.luoshang.zkweb.util.ZkCfgFactory;
-import com.luoshang.zkweb.util.ZkManager.PropertyPanel;
 
 @Controller
 @RequestMapping("/zk")
 public class ZkController implements DisposableBean {
 
-	private static final Logger log = LoggerFactory.getLogger(ZkController.class);
+	private static final Logger Logger = LoggerFactory.getLogger(ZkController.class);
 
 	/**
 	 * 查看zookeeper节点信息
@@ -42,10 +42,9 @@ public class ZkController implements DisposableBean {
 	@RequestMapping(value = "/queryZnodeInfo", produces = "text/html;charset=UTF-8")
 	public String queryzNodeInfo(@RequestParam(required = false) String path, Model model,
 			@RequestParam(required = true) String cacheId) {
-
 		try {
 			path = URLDecoder.decode(path, "utf-8");
-			log.info("queryzNodeInfo1111 : " + path);
+			Logger.debug("queryzNodeInfo:{}",path);
 			if (path != null) {
 				model.addAttribute("zkpath", path);
 				model.addAttribute("path", path);
@@ -60,16 +59,15 @@ public class ZkController implements DisposableBean {
 				model.mergeAttributes(ZkCache.get(cacheId).getNodeMeta(path));
 				model.addAttribute("acls", ZkCache.get(cacheId).getACLs(path));
 			}
-
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.debug("查看zookeeper节点信息异常:{}",e.getMessage());
 			model.addAttribute("zkpath", path);
 			model.addAttribute("path", path);
 			model.addAttribute("cacheId", cacheId);
 			model.addAttribute("data", "");
 			model.addAttribute("acls", Collections.emptyList());
 		}
-		log.info("model : " + model);
+		Logger.debug("model:{} ",model);
 		return "info";
 	}
 
@@ -81,39 +79,38 @@ public class ZkController implements DisposableBean {
 	 * @return
 	 */
 	@RequestMapping(value = "/queryZKOk")
-	public @ResponseBody String queryZKOk(Model model, @RequestParam(required = true) String cacheId) {
-		String exmsg = "<font color='red'>Disconnected Or Exception</font>";
+	@ResponseBody
+	public String queryZKOk(Model model, @RequestParam(required = true) String cacheId) {
+		String exmsg = "<font color='red'>断开连接或者异常</font>";
 		try {
 			if (ZkCache.get(cacheId).getData("/", false) != null) {
-				log.info("cacheId[{}] : {}", cacheId, "Connected");
-				return "<font color='blue'>Connected</font>";
+				Logger.debug("cacheId[{}] : {}", cacheId, "连接成功");
+				return "<font color='blue'>连接成功</font>";
 			} else {
-				log.info("cacheId[{}] : {}", cacheId, "Disconnected Or Exception");
+				Logger.debug("cacheId[{}] : {}", cacheId, "断开连接或者异常");
 				return exmsg;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.info("cacheId[{}] : {}", cacheId, "Disconnected Or Exception");
+			Logger.debug("cacheId[{}] : {}", cacheId, "断开连接或者异常");
 		}
-
 		return exmsg;
 	}
 
 	@RequestMapping(value = "/queryZKJMXInfo", produces = "application/json;charset=UTF-8")
-	public @ResponseBody List<PropertyPanel> queryZKJMXInfo(@RequestParam(required = true) String simpleFlag,
+	@ResponseBody
+	public List<PropertyPanel> queryZKJMXInfo(@RequestParam(required = true) String simpleFlag,
 			@RequestParam(required = true) String cacheId, HttpServletResponse response) {
-
 		try {
 			List<PropertyPanel> result = ZkCache.get(cacheId)
 					.getJMXInfo(Integer.parseInt(simpleFlag) == 0 ? false : true);
-			log.info("queryZKJMXInfo simpleFlag={},cacheId={},result : {}", simpleFlag, cacheId,
+			Logger.debug("queryZKJMXInfo simpleFlag={},cacheId={},result : {}", simpleFlag, cacheId,
 					JSON.std.asString(result));
 			response.addHeader("Access-Control-Allow-Origin", "*");
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return Collections.emptyList();
 	}
 
@@ -126,18 +123,18 @@ public class ZkController implements DisposableBean {
 	 * @return
 	 */
 	@RequestMapping(value = "/queryZnode")
-	public @ResponseBody List<Tree> query(@RequestParam(required = false) String id,
+	@ResponseBody
+	public List<Tree> query(@RequestParam(required = false) String id,
 			@RequestParam(required = false) String path, @RequestParam(required = true) String cacheId) {
-
-		log.info("id : {}", id);
-		log.info("path : {}", path);
-		log.info("cacheId : {}", cacheId);
+		Logger.debug("id : {}", id);
+		Logger.debug("path : {}", path);
+		Logger.debug("cacheId : {}", cacheId);
 		TreeRoot root = new TreeRoot();
 		if (path == null) {
 		} else if ("/".equals(path)) {
 			root.remove(0);
 			List<String> pathList = ZkCache.get(cacheId).getChildren(null);
-			log.info("list {}", pathList);
+			Logger.debug("list {}", pathList);
 			for (String p : pathList) {
 				Map<String, Object> atr = new HashMap<String, Object>();
 				atr.put("path", "/" + p);
@@ -149,7 +146,6 @@ public class ZkController implements DisposableBean {
 			try {
 				path = URLDecoder.decode(path, "utf-8");
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			List<String> pathList = ZkCache.get(cacheId).getChildren(path);
@@ -172,16 +168,16 @@ public class ZkController implements DisposableBean {
 	 * @return
 	 */
 	@RequestMapping(value = "/saveData", produces = "text/html;charset=UTF-8")
-	public @ResponseBody String saveData(@RequestParam() String path, @RequestParam() String data,
-			@RequestParam(required = true) String cacheId) {
-
+	@ResponseBody
+	public String saveData(@RequestParam() String path, @RequestParam() String data,@RequestParam() String cacheId) {
+		Logger.debug("cacheId---", cacheId);
 		try {
-			log.info("data:{}", data);
+			Logger.debug("data:{}", data);
+			Logger.debug("path---"+path);
 			return ZkCache.get(cacheId).setData(path, data) == true ? "保存成功" : "保存失败";
 		} catch (Exception e) {
-			log.info("Error : {}", e.getMessage());
-			e.printStackTrace();
-			return "保存失败! Error : " + e.getMessage();
+			Logger.debug("保存失败:{}", e.getMessage());
+			return "保存失败!";
 		}
 
 	}
@@ -199,11 +195,11 @@ public class ZkController implements DisposableBean {
 			@RequestParam(required = true) String cacheId) {
 
 		try {
-			log.info("path:{}", path);
-			log.info("nodeName:{}", nodeName);
+			Logger.debug("path:{}", path);
+			Logger.debug("nodeName:{}", nodeName);
 			return ZkCache.get(cacheId).createNode(path, nodeName, "") == true ? "保存成功" : "保存失败";
 		} catch (Exception e) {
-			log.info("Error : {}", e.getMessage());
+			Logger.debug("Error : {}", e.getMessage());
 			e.printStackTrace();
 			return "保存失败! Error : " + e.getMessage();
 		}
@@ -221,10 +217,10 @@ public class ZkController implements DisposableBean {
 	public @ResponseBody String deleteNode(@RequestParam() String path, @RequestParam(required = true) String cacheId) {
 
 		try {
-			log.info("path:{}", path);
+			Logger.debug("path:{}", path);
 			return ZkCache.get(cacheId).deleteNode(path) == true ? "删除成功" : "删除失败";
 		} catch (Exception e) {
-			log.info("Error : {}", e.getMessage());
+			Logger.debug("Error : {}", e.getMessage());
 			e.printStackTrace();
 			return "删除失败! Error : " + e.getMessage();
 		}
@@ -236,7 +232,7 @@ public class ZkController implements DisposableBean {
 	 */
 	@Override
 	public void destroy() throws Exception {
-		log.info("destroyZkCfgManager()...");
+		Logger.debug("destroyZkCfgManager()...");
 		ZkCfgFactory.createZkCfgManager().destroyPool();
 	}
 

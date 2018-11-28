@@ -13,40 +13,43 @@ import javax.sql.DataSource;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * H2工具类
+ * 
+ * @author LS
+ * @date 2018年11月28日上午11:26:37
+ */
 public class H2Util {
-
-	// private static ComboPooledDataSource dataSource = new
-	// ComboPooledDataSource();
 	@Autowired
 	private static DataSource dataSource;
 
 	public static DataSource getDataSource() {
-
 		return dataSource;
 	}
 
 	public static void destroyDataSource() {
-		// if(dataSource!=null)
-		// dataSource.close();
+
 	}
 
+	/**
+	 * 对象处理
+	 */
 	public static ResultSetHandler<Object[]> objectHandler = new ResultSetHandler<Object[]>() {
 		public Object[] handle(ResultSet rs) throws SQLException {
-
 			ResultSetMetaData meta = rs.getMetaData();
 			int cols = meta.getColumnCount();
 			Object[] result = new Object[cols];
-
 			for (int i = 0; i < cols; i++) {
 				result[i] = rs.getObject(i + 1);
 			}
-
 			return result;
 		}
 	};
 
+	/**
+	 * map集合处理
+	 */
 	public static ResultSetHandler<Map<String, Object>> mapHandler = new ResultSetHandler<Map<String, Object>>() {
-
 		public Map<String, Object> handle(ResultSet rs) throws SQLException {
 			Map<String, Object> map = new HashMap<String, Object>();
 			ResultSetMetaData meta = rs.getMetaData();
@@ -58,21 +61,22 @@ public class H2Util {
 		}
 	};
 
+	/**
+	 * int处理
+	 */
 	public static ResultSetHandler<Integer> intHandler = new ResultSetHandler<Integer>() {
-
 		public Integer handle(ResultSet rs) throws SQLException {
-
 			return rs.getInt(1);
 		}
 
 	};
 
+	/**
+	 * List集合处理
+	 */
 	public static ResultSetHandler<List<Map<String, Object>>> ListHandler = new ResultSetHandler<List<Map<String, Object>>>() {
-
 		public List<Map<String, Object>> handle(ResultSet rs) throws SQLException {
-
 			List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-
 			ResultSetMetaData meta = rs.getMetaData();
 			Map<String, Object> map = null;
 			int cols = meta.getColumnCount();
@@ -83,9 +87,7 @@ public class H2Util {
 				}
 				list.add(map);
 			}
-
 			return list;
 		}
 	};
-
 }

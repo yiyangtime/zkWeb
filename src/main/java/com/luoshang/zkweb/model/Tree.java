@@ -2,21 +2,22 @@ package com.luoshang.zkweb.model;
 
 import java.util.List;
 import java.util.Map;
-
+/**
+ * 树
+ * @author LS
+ * @date 2018年11月28日上午11:22:38
+ */
 public class Tree {
-
 	private int id;
 	private String text;
-	// state: node state, 'open' or 'closed', default is 'open'. When set to
-	// 'closed', the node have children nodes and will load them from remote site
+	// state：节点状态，'open'或'closed'，默认为'open'。 设置为“关闭”时，节点具有子节点，并将从远程站点加载它们
 	private String state;
-
 	public static final String STATE_OPENNED = "open";
 	public static final String STATE_CLOSED = "closed";
 	private List<Tree> childern;
-	// checked: Indicate whether the node is checked selected.
+	// checked：指示是否选中了节点。
 	private Boolean checked;
-	// attributes: custom attributes can be added to a node
+	// attributes：可以将自定义属性添加到节点
 	private Map<String, Object> attributes;
 
 	public Tree() {

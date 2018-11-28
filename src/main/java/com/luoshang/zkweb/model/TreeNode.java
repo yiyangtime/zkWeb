@@ -1,7 +1,12 @@
 package com.luoshang.zkweb.model;
 
+/**
+ * 树节点实体类
+ * 
+ * @author LS
+ * @date 2018年11月28日上午11:21:43
+ */
 public class TreeNode {
-
 	private int id;
 	private String name;
 	private int pid = -1;

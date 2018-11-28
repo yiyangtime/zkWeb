@@ -1,4 +1,4 @@
-package com.luoshang.zkweb.util;
+package com.luoshang.zkweb.service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.management.InstanceNotFoundException;
 import javax.management.IntrospectionException;
 import javax.management.MBeanServerConnection;
@@ -24,16 +25,17 @@ import javax.management.remote.JMXServiceURL;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.ZooDefs.Ids;
 import org.apache.zookeeper.ZooDefs.Perms;
+import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.luoshang.zkweb.util.ZkManagerImpl.ZkConnectInfo.ZkHostPort;
+import com.luoshang.zkweb.facade.ZkManager;
+import com.luoshang.zkweb.service.ZkManagerImpl.ZkConnectInfo.ZkHostPort;
 
 public class ZkManagerImpl implements Watcher, ZkManager {
 

@@ -5,16 +5,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.luoshang.zkweb.facade.ZkCfgManager;
+import com.luoshang.zkweb.service.ZkManagerImpl;
 import com.luoshang.zkweb.util.ZkCache;
 import com.luoshang.zkweb.util.ZkCfgFactory;
-import com.luoshang.zkweb.util.ZkCfgManager;
-import com.luoshang.zkweb.util.ZkManagerImpl;
 
 /**
  * zookeeper配置管理controller
@@ -63,18 +64,15 @@ public class ZkCfgController {
 	@RequestMapping(value = "/addZkCfg", produces = "text/html;charset=UTF-8")
 	public String addZkCfg(@RequestParam(required = false) String desc,
 			@RequestParam(required = false) String connectstr, @RequestParam(required = false) String sessiontimeout) {
-
 		try {
-			// String id = UUID.randomUUID().toString().replaceAll("-", "");
-			String id = UUID.randomUUID().toString();
+			String id = UUID.randomUUID().toString().replaceAll("-", "");
+			// String id = UUID.randomUUID().toString();
 			if (ZkCfgFactory.createZkCfgManager().add(id, desc, connectstr, sessiontimeout)) {
 				ZkCache.put(id, ZkManagerImpl.createZk().connect(connectstr, Integer.parseInt(sessiontimeout)));
+				Logger.debug("添加zookeeper配置成功,id:{}", id);
 			}
-			;
-
 		} catch (Exception e) {
-			e.printStackTrace();
-			Logger.error(e.getMessage(), e);
+			Logger.error("添加zookeeper配置失败");
 			return "添加失败";
 		}
 		return "添加成功";
@@ -88,14 +86,15 @@ public class ZkCfgController {
 	 */
 	@RequestMapping(value = "/queryZkCfgById")
 	public Map<String, Object> queryZkCfg(@RequestParam(required = false) String id) {
-
+		Map<String, Object> map = null;
 		try {
-			return ZkCfgFactory.createZkCfgManager().findById(id);
+			map = ZkCfgFactory.createZkCfgManager().findById(id);
+			Logger.debug("查询zookeeper配置成功");
+			return map;
 		} catch (Exception e) {
-			e.printStackTrace();
-			Logger.error(e.getMessage(), e);
+			Logger.error("查询zookeeper配置失败");
 		}
-		return null;
+		return map;
 	}
 
 	/**
@@ -110,16 +109,13 @@ public class ZkCfgController {
 	@RequestMapping(value = "/updateZkCfg", produces = "text/html;charset=UTF-8")
 	public String updateZkCfg(@RequestParam(required = true) String id, @RequestParam(required = false) String desc,
 			@RequestParam(required = false) String connectstr, @RequestParam(required = false) String sessiontimeout) {
-
 		try {
 			if (ZkCfgFactory.createZkCfgManager().update(id, desc, connectstr, sessiontimeout)) {
 				ZkCache.put(id, ZkManagerImpl.createZk().connect(connectstr, Integer.parseInt(sessiontimeout)));
+				Logger.debug("更新zookeeper配置成功");
 			}
-			;
-
 		} catch (Exception e) {
-			e.printStackTrace();
-			Logger.error(e.getMessage(), e);
+			Logger.error("更新zookeeper配置失败");
 			return "保存失败";
 		}
 		return "保存成功";
@@ -136,10 +132,9 @@ public class ZkCfgController {
 		try {
 			ZkCfgFactory.createZkCfgManager().delete(id);
 			ZkCache.remove(id);
-
+			Logger.debug("删除zookeeper配置成功");
 		} catch (Exception e) {
-			e.printStackTrace();
-			Logger.error(e.getMessage(), e);
+			Logger.error("删除zookeeper配置失败");
 			return "删除失败";
 		}
 		return "删除成功";

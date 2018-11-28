@@ -7,38 +7,41 @@ import java.util.Properties;
 
 public class ConfigUtil {
 
-	private static Properties p = new Properties();
+	private static Properties properties = new Properties();
 	static {
 		try {
-			p.load(findOtherPathInputStream("zk.properties"));
+			properties.load(findOtherPathInputStream("zk.properties"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	public static Properties getP() {
-		return p;
+	public static Properties getProperties() {
+		return properties;
 	}
 
-	public static void setP(Properties p) {
-		ConfigUtil.p = p;
+	public static void setProperties(Properties properties) {
+		ConfigUtil.properties = properties;
 	}
 
 	public static String getConfigMessage(String key) {
-
 		if (key != null && key.trim().length() > 0) {
-			return p.getProperty(key);
+			return properties.getProperty(key);
 		}
 		return null;
 	}
 
+	/**
+	 * 读取属性文件内容
+	 * 
+	 * @param propFile
+	 * @return
+	 */
 	private static InputStream findOtherPathInputStream(String propFile) {
-
 		InputStream inputStream = ConfigUtil.class.getClassLoader().getResourceAsStream(propFile);
 		if (inputStream != null)
 			return inputStream;
-
 		java.io.File f = null;
 		String curDir = System.getProperty("user.dir");
 		f = new java.io.File(curDir, propFile);

@@ -55,11 +55,6 @@
 			<groupId>javax.annotation</groupId>
 			<artifactId>javax.annotation-api</artifactId>
 		</dependency>
-		<!-- Logging -->
-		<!-- <dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency> -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
@@ -99,11 +94,16 @@
 			<artifactId>c3p0</artifactId>
 			<version>0.9.5.2</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.mchange/mchange-commons-java -->
 		<dependency>
 			<groupId>com.mchange</groupId>
 			<artifactId>mchange-commons-java</artifactId>
 			<version>0.2.15</version>
+		</dependency>
+		<!-- 添加数据库连接池 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.0.5</version>
 		</dependency>
 	</dependencies>
 	<build>

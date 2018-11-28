@@ -106,9 +106,9 @@ var execI18n = function(){
             return false;
         };
 
-        /*
-        这里需要进行i18n的翻译
-         */
+       /*
+        *  这里需要进行i18n的翻译
+        */
         jQuery.i18n.properties({
             name : sourceName, //资源文件名称
             path : 'locale/', //'i18n/' + i18nLanguage +'/', //资源文件路径
@@ -139,13 +139,10 @@ var execI18n = function(){
 }
 /*页面执行加载执行*/
 $(function(){
-
     /*执行I18n翻译*/
     execI18n();
-
     /*将语言选择默认选中缓存中的值*/
     $("#language option[value="+i18nLanguage+"]").attr("selected",true);
-
     /* 选择语言 */
     $("#language").on('change', function() {
         var language = $(this).children('option:selected').val()
